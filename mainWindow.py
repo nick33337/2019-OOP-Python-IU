@@ -16,6 +16,10 @@ class PushButtonWindow(QMainWindow):
         start_btn = QPushButton("시작하기", self)
         start_btn.move(20, 20)
         start_btn.setGeometry(400, 600, 150, 50)
+        start_btn.clicked.connect(self.refresh_Window)  # 버튼을 클릭하면 괄호 안의 창과 연결됨
+
+    def refresh_Window(self):
+        QMessageBox.about(self, "페이지를 새로고침합니다.\n정각에 타이머를 버튼을 눌러 주세요" "타이머 구현")
 
 
 if __name__ == "__main__":
