@@ -2,24 +2,34 @@ import sys
 from PyQt5.QtWidgets import *
 
 
+# 창 정의
 class PushButtonWindow(QMainWindow):
+    # 창 초기화
     def __init__(self):
         super().__init__()
-        self.setupUI()
+
+        self.setupUI()  # 메인 창
+        self.labels()  # 제목과 제작자 라벨
 
         self.setWindowTitle("티켓팅 연습 게임")
         self.setGeometry(300, 200, 1200, 700)  # x축, y축, 가로, 세로 지정하기
 
-    def setupUI(self):
-        self.setWindowTitle("PushButtonWindow")
-
+    def setupUI(self):  # 메인창
+        # 시작 버튼
         start_btn = QPushButton("시작하기", self)
-        start_btn.move(20, 20)
-        start_btn.setGeometry(400, 600, 150, 50)
-        start_btn.clicked.connect(self.refresh_Window)  # 버튼을 클릭하면 괄호 안의 창과 연결됨
+        start_btn.setGeometry(400, 600, 150, 50)  # move 와 resize 를 모두 포함
 
-    def refresh_Window(self):
-        QMessageBox.about(self, "페이지를 새로고침합니다.\n정각에 타이머를 버튼을 눌러 주세요" "타이머 구현")
+    def labels(self):  # 제목과 제작자 라벨
+        lbl_title = QLabel('티켓팅 연습 게임')
+        # lbl_people = QLabel('제작자: 성민경 | 오세현 | 정도영\n2019 객체지향프로그래밍')
+        lbl_title.setStyleSheet("color: red;"
+                              "border-style: solid;"
+                              "border-width: 2px;"
+                              "border-color: #FA8072;"
+                              "border-radius: 3px")
+
+        self.setGeometry(300, 300, 300, 200)
+        self.show()
 
 
 if __name__ == "__main__":
