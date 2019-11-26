@@ -1,9 +1,10 @@
 import sys
 from PyQt5.QtWidgets import *
 
+# ★중요★ pyqt는 레이아웃을 지정해 주고 각 요소를 집어넣어야 화면에 뜸
 
 # 창 정의
-class PushButtonWindow(QMainWindow):
+class PushButtonWindow(QWidget):
     # 창 초기화
     def __init__(self):
         super().__init__()
@@ -20,24 +21,12 @@ class PushButtonWindow(QMainWindow):
         start_btn.setGeometry(400, 600, 150, 50)  # move 와 resize 를 모두 포함
 
     def labels(self):  # 제목과 제작자 라벨
-        lbl_title = QLabel('티켓팅 연습 게임')
-        # lbl_people = QLabel('제작자: 성민경 | 오세현 | 정도영\n2019 객체지향프로그래밍')
-        lbl_title.setStyleSheet("color: red;"
-                              "border-style: solid;"
-                              "border-width: 2px;"
-                              "border-color: #FA8072;"
-                              "border-radius: 3px")
-
-        self.setGeometry(300, 300, 300, 200)
-        self.show()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PushButtonWindow()
     window.show()
     app.exec_()
-
 
 """
 예전 코드!
