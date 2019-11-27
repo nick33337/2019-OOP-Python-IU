@@ -1,54 +1,68 @@
 import sys
 from PyQt5.QtWidgets import *
 
-# ★중요★ pyqt는 레이아웃을 지정해 주고 각 요소를 집어넣어야 화면에 뜸
+# ★중요★ pyqt 는 레이아웃을 지정해 주고 각 요소를 집어넣어야 화면에 뜸
 
 # 창 정의
-class PushButtonWindow(QWidget):
+class MainWindow(QWidget):
     # 창 초기화
     def __init__(self):
         super().__init__()
 
-        self.setupUI()  # 메인 창
-        self.labels()  # 제목과 제작자 라벨
+        self.leftVerticalBox()  # 왼쪽 세로 구역: 제목/제작자 라벨, 졸업식 이미지/게임 도움말
+        self.middleVerticalBox()  # 가운데 세로 구역: 공연 정보 라벨, 시작 버튼
+        self.rightVerticalBox()  # 오른쪽 세로 구역: 달력, 공연 시간, 난이도
+
+        # 전체 세로 박스 정렬 필요
 
         self.setWindowTitle("티켓팅 연습 게임")
         self.setGeometry(300, 200, 1200, 700)  # x축, y축, 가로, 세로 지정하기
 
-    def setupUI(self):  # 메인창
+    def horizontalBox(self):  # 세로 박스 전체를 가로로 정렬하는 레이아웃
+
+
+    def leftVerticalBox(self):  # 왼쪽 세로 구역: 제목/제작자 라벨, 졸업식 이미지/게임 도움말
+        # 제목, 제작자, 도움말 라벨
+        label = QLabel()
+        lblTitle = label.setText("<b>2019 객체지향프로그래밍\n티켓팅 연습 게임</b>")
+        lblPeople = label.setText("제작자: 성민경 | 오세현 | 정도영")
+        lblHelp = label.setText("<b>도움말</b>\n티켓팅 연습 게임입니다.\n시작하기 버튼을 누르면 ")
+
+        # 레이아웃
+        hLayout = QVBoxLayout
+        hLayout.addwidget(lblTitle)
+        hLayout.addwidget(lblPeople)
+        hLayout.addWidget(lblHelp)
+
+
+    def middleVerticalBox(self):  # 가운데 세로 구역: 공연 정보 라벨, 시작 버튼
+        # 공연 정보 라벨
+        label = QLabel()
+        lblInfo = label.setText("<b>공연 정보</b>\n일시: 2020년 1월 3일\n장소: 세종과학예술영재학교 강당\nVIP석 12만원\n일반석 9만원")
+
         # 시작 버튼
         start_btn = QPushButton("시작하기", self)
-        start_btn.setGeometry(400, 600, 150, 50)  # move 와 resize 를 모두 포함
+        start_btn.resize(150, 50)  # resize(): (x축, y축) 크기
 
-    def labels(self):  # 제목과 제작자 라벨
+        # 레이아웃
+        hLayout = QVBoxLayout
+        hLayout.addwidget(lblInfo)
+        hLayout.addwidget(start_btn)
 
-if __name__ == "__main__":
+    def rightVerticalBox(self):  # 오른쪽 세로 구역: 달력, 공연 시간, 난이도
+        # 달력
+
+        # 공연 시간
+
+        # 난이도
+
+        # 레이아웃
+        hLayout = QVBoxLayout
+        hLayout.addWidget()
+        hLayout.addWidget()
+        hLayout.addWidget()
+if __name__ = "__main__":  # 실행 코드(?)
     app = QApplication(sys.argv)
-    window = PushButtonWindow()
+    window = MainWindow()
     window.show()
     app.exec_()
-
-"""
-예전 코드!
-class MyDialog(QDialog):
-    def __init__(self):
-        
-        QDialog.__init__(self)
-        # 레이블, 버튼 컨트롤
-        titleName = QLabel("티켓팅 연습 게임")
-        titleName2 = QLabel("제작: 성민경 | 오세현 | 정도영")
-        btnStart = QPushButton("시작하기")
-
-        layout = QVBoxLayout()
-        layout.addWidget(titleName)
-        layout.addWidget(titleName2)
-        layout.addWidget(btnStart)
-
-        self.setLayout(layout)
-        
-
-app = QApplication([])
-dialog = MyDialog([])
-dialog.show()
-app.exec_()
-"""
