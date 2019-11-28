@@ -162,6 +162,9 @@ class OurGame: #BlockRunner
       GameoverLabel = font.render("Gameover", True, (0, 0, 128), (255, 255, 255))
       self.screen.blit(GameoverLabel, (512, 700))
 
+      time.sleep(2)
+      return
+
 
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
@@ -177,8 +180,8 @@ class OurGame: #BlockRunner
                y = self.boardy
          else :
             y = random.randrange(0, self.boardy)
-            pickk = random.randrange(1, 2)
-            if pickk == 1:
+            pickkk = random.randrange(1, 2)
+            if pickkk == 1:
                x = 0
             else :
                x = self.boardx
@@ -286,17 +289,18 @@ class OurGame: #BlockRunner
                #elif (True):
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
-               if self.turns > 1:
+               if self.turns > 1 and self.skillflag1 != "Fin":
                   self.skillflag1 = "Activated"
-               if self.turns > 2:
+               if self.turns > 2 and self.skillflag2 != "Fin":
                   self.skillflag2 = "Activated"
-               if self.turns > 5:
+               if self.turns > 5 and self.skillflag3 != "Fin":
                   self.skillflag3 = "Activated"
 
 
                if over != None:
                   if over == "WIN": print("You survived!")
                   elif over == "LOSE": print("Looks like the robots got you this time!")
+
                   running = False
 
                self.drawGrid()
