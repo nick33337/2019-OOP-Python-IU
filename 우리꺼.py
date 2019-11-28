@@ -99,12 +99,10 @@ class OurGame: #BlockRunner
       eatingLabel = font.render("Eating : {}".format(self.eating), True, (255, 255, 255), (255, 0, 0))
       self.screen.blit(eatingLabel, (150, 550))
 
-      print("1")
       if self.skillflag1 == "Activated":
          skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
          self.screen.blit(skillLabel1, (550, 610))
          self.skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
-         print("2")
 
       if self.skillflag2 == "Activated":
          skillLabel2 = font.render("Cross(lv2) with C", True, (225, 0, 225))
@@ -194,7 +192,8 @@ class OurGame: #BlockRunner
          self.robots[index] = bot
 
          if self.grid[bot] == "PLAYER":
-            # print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
+
+            print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
             return
 
          if self.grid[bot] == "ROBOT":
