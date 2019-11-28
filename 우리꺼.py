@@ -225,7 +225,6 @@ class OurGame: #BlockRunner
 
 # 플레이어의 키 조작(여기서 키보드 상의 원하는 키를 게임에서의 기능과 연관시킬 수 있다)
    def run(self):
-      global turns, skillflag1, skillflag2, skillflag3
       global Buldoger
 
       running = True
@@ -277,11 +276,11 @@ class OurGame: #BlockRunner
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
                if self.turns > 10:
-                  skillflag1 = "Activated"
-               if self.turns > 20:
-                  skillflag2 = "Activated"
+                  self.skillflag1 = "Activated"
+               if self.turns > 5:
+                  self.skillflag2 = "Activated"
                if self.turns > 50:
-                  skillflag3 = "Activated"
+                  self.skillflag3 = "Activated"
 
 
                if over != None:
