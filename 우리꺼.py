@@ -2,15 +2,15 @@ import pygame
 import random
 
 Buldoger = 0
-skillflag1 = "InActivated"
-skillflag2 = "InActivated"
-skillflag3 = "InActivated"
 
 class OurGame: # 제목 추천 부탁해요~
    def __init__(self, screen, startingSomethings, boardx, boardy):
       self.turns = 0
       self.eating = 0
       self.movsteps = 1
+      self.skillflag1 = "InActivated"
+      self.skillflag2 = "InActivated"
+      self.skillflag3 = "InActivated"
       self.screen = screen
       self.boardx = boardx
       self.boardy = boardy
@@ -89,30 +89,27 @@ class OurGame: # 제목 추천 부탁해요~
                pygame.draw.rect(self.screen, (0, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
 
 
-      # 여기부터 원본 코드에서 추가된 부분
-      global turns, skillflag1, skillflag2, skillflag3, eating
-
       pygame.font.init()
       font = pygame.font.SysFont("", 20)
 
       # turn수를 업데이트할 때마다 글씨가 겹쳐져서 출력된다.. 한 번 출력된 글씨를 지우는 방법이 필요(일단은 글씨 배경색을 지정해서 해결)
-      turnLabel = font.render("Turns : {}".format(turns), True, (125, 125, 255), (255, 255, 255))
+      turnLabel = font.render("Turns : {}".format(self.turns), True, (125, 125, 255), (255, 255, 255))
       self.screen.blit(turnLabel, (75, 550))
 
-      eatingLabel = font.render("Eating : {}".format(eating), True, (255, 255, 255), (255, 0, 0))
+      eatingLabel = font.render("Eating : {}".format(self.eating), True, (255, 255, 255), (255, 0, 0))
       self.screen.blit(eatingLabel, (150, 550))
 
-      if skillflag1 == "Activated":
+      if self.skillflag1 == "Activated":
          skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
          self.screen.blit(skillLabel1, (550, 610))
          skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
 
-      if skillflag2 == "Activated":
+      if self.skillflag2 == "Activated":
          skillLabel2 = font.render("Cross(lv2) with C", True, (225, 0, 225))
          self.screen.blit(skillLabel2, (550, 640))
          skillflag2 = "Fin"
 
-      if skillflag3 == "Activated":
+      if self.skillflag3 == "Activated":
          skillLabel3 = font.render("Rook(lv3) with R", True, (255, 100, 30))
          self.screen.blit(skillLabel3, (550, 670))
          skillflag3 = "Fin"
@@ -145,8 +142,7 @@ class OurGame: # 제목 추천 부탁해요~
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
       # 턴 수에 따라 봇을 자동으로 추가(오류있음)
-      global turns
-      if turns % 2 == 0:
+      if self.turns % 2 == 0:
          xy = random.randrange(1, 100)
          if xy % 2 == 0:
             x = random.randrange(1, self.boardx)
@@ -198,7 +194,7 @@ class OurGame: # 제목 추천 부탁해요~
             continue
 
          if self.grid[bot] == "TAIL":
-            eating += 1
+            self.eating += 1
 
          self.grid[bot] = "ROBOT"
 
@@ -234,28 +230,28 @@ class OurGame: # 제목 추천 부탁해요~
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
-                  turns += 1
+                  self.turns += 1
                elif event.key == pygame.K_UP or event.key == ord ( "w" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY -= 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
-                  turns += 1
+                  self.turns += 1
                elif event.key == pygame.K_RIGHT or event.key == ord ( "d" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
-                  turns += 1
+                  self.turns += 1
                elif event.key == pygame.K_LEFT or event.key == ord ( "a" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX -= 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
-                  turns += 1
+                  self.turns += 1
                elif event.key == ord ( "t" ):
                   self.grid [ ( self.playerX, self.playerY ) ] = "TAIL"
                   self.playerX = random.randrange ( 1 , self.boardx )
                   self.playerY = random.randrange ( 1 , self.boardy )
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
-                  turns += 1
+                  self.turns += 1
                elif event.key == ord ( "b" ):
                   self.Buldoger(self.playerX, self.playerY)
                elif event.key == ord ( "c" ):
@@ -272,11 +268,11 @@ class OurGame: # 제목 추천 부탁해요~
                #elif (True):
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
-               if turns > 10:
+               if self.turns > 10:
                   skillflag1 = "Activated"
-               if turns > 20:
+               if self.turns > 20:
                   skillflag2 = "Activated"
-               if turns > 50:
+               if self.turns > 50:
                   skillflag3 = "Activated"
 
 
