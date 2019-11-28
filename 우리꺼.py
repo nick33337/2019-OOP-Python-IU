@@ -2,38 +2,39 @@ import pygame
 import random
 import time
 
-class robotsGame:
-   def __init__ ( self , screen , startingRobots ):
+class robotsGame: # 제목 추천 부탁해요~
+   def __init__(self, screen, startingRobots):
       self.screen = screen
 
       self.grid = dict()
-      for y in range ( 25 ):
-         for x in range ( 50 ):
-            self.grid [ ( x , y ) ] = None
+      for y in range(25):
+         for x in range(50):
+            self.grid[(x, y)] = None
 
       self.robots = list()
-      for i in range ( startingRobots ):
+      for i in range(startingRobots):
          while 1:
-            x = random.randrange ( 0 , 50 )
-            y = random.randrange ( 0 , 25 )
+            x = random.randrange(0, 50)
+            y = random.randrange(0, 25)
 
             if ( x , y ) not in self.robots:
-               self.robots.append ( ( x , y ) )
-               self.grid [ ( x , y ) ] = "ROBOT"
+               self.robots.append((x, y))
+               self.grid[(x, y)] = "ROBOT"
                break
 
       while 1:
-         x = random.randrange ( 0 , 50 )
-         y = random.randrange ( 0 , 25 )
+         x = random.randrange(0, 50)
+         y = random.randrange(0, 25)
 
-         if self.checkGrid ( ( x , y ) ) == False:
-            self.grid [ ( x , y ) ] = "PLAYER"
+         if self.checkGrid((x, y)) == False:
+            self.grid[(x, y)] = "PLAYER"
             self.playerX = x
             self.playerY = y
             break
 
       self.legend()
 
+# 화면 하단에 보이는 글씨, 스킬 목록을 표시(추가 예정)
    def legend ( self ):
       pygame.draw.rect ( self.screen , ( 255 , 0 , 0 ) , ( 50 , 550 , 20 , 20 ) , 0 )   # Robot
       pygame.draw.rect ( self.screen , ( 0 , 255 , 0 ) , ( 50 , 580 , 20 , 20 ) , 0 )   # You
@@ -42,17 +43,19 @@ class robotsGame:
       pygame.font.init()
       font = pygame.font.SysFont ( "" , 20 )
 
-      robotLabel = font.render ( "Robots" , True , ( 0 , 255 , 0 ) )
-      playerLabel = font.render ( "Player" , True , ( 0 , 255 , 0 ) )
-      rubbleLabel = font.render ( "Rubble" , True , ( 0 , 255 , 0 ) )
-      moveLabel = font.render ( "Move with Q, W, E, A, D, Z, X, C or the arrow keys" , True , ( 0 , 255 , 0 ) )
-      teleportLabel = font.render ( "Teleport with T" , True , ( 0 , 255 , 0 ) )
+      robotLabel = font.render("Robots", True, (0, 255, 0))
+      playerLabel = font.render("Player", True, (0, 255, 0))
+      rubbleLabel = font.render("Rubble", True, (0, 255, 0))
+      moveLabel = font.render("Move with Q, W, E, A, D, Z, X, C or the arrow keys", True, (0, 255, 0))
+      teleportLabel = font.render("Teleport with T", True, (0, 255, 0))
+      skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
 
-      self.screen.blit ( robotLabel , ( 75 , 550 ) )
-      self.screen.blit ( playerLabel , ( 75 , 580 ) )
-      self.screen.blit ( rubbleLabel , ( 75 , 610 ) )
-      self.screen.blit ( moveLabel , ( 550 , 550 ) )
-      self.screen.blit ( teleportLabel , ( 550 , 580 ) )
+      self.screen.blit(robotLabel, (75, 550))
+      self.screen.blit(playerLabel, (75, 580))
+      self.screen.blit(rubbleLabel, (75, 610))
+      self.screen.blit(moveLabel, (550, 550))
+      self.screen.blit(teleportLabel, (550, 580))
+      self.screen.blit(skillLabel1, (550, 610))
 
 # 로봇(붉은 색), 사용자(초록 색), 러블(노란 색)을 표시하는 크기와 위치 설정
    def drawGrid ( self ):
