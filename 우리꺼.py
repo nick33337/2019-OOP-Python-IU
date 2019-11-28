@@ -189,10 +189,6 @@ class robotsGame:
                   elif over == "LOSE": print("Looks like the robots got you this time!")
                   running = False
 
- #DBG                  print "Player", self.playerX, self.playerY
- #DBG                  for index , bot in enumerate ( self.robots ):
- #DBG                     print "bot", index, bot, self.grid [ bot ]
-
                self.drawGrid()
 
 pygame.display.init()
