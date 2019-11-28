@@ -1,9 +1,6 @@
 import pygame
 import random
 
-turns = 0
-eating = 0
-movsteps = 1
 Buldoger = 0
 skillflag1 = "InActivated"
 skillflag2 = "InActivated"
@@ -11,7 +8,9 @@ skillflag3 = "InActivated"
 
 class OurGame: # 제목 추천 부탁해요~
    def __init__(self, screen, startingSomethings, boardx, boardy):
-
+      self.turns = 0
+      self.eating = 0
+      self.movsteps = 1
       self.screen = screen
       self.boardx = boardx
       self.boardy = boardy
@@ -81,9 +80,9 @@ class OurGame: # 제목 추천 부탁해요~
             if self.grid[(x, y)] == "ROBOT":
                 pygame.draw.rect(self.screen, (255, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "PLAYER":
-               pygame.draw.rect(self.screen , (0, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+               pygame.draw.rect(self.screen, (0, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "RUBBLE":
-               pygame.draw.rect(self.screen , (255, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+               pygame.draw.rect(self.screen, (255, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "TAIL":
                pygame.draw.rect(self.screen, (0, 128, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             else:
@@ -130,10 +129,10 @@ class OurGame: # 제목 추천 부탁해요~
       pass
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
-   def checkWinLose ( self ):
+   def checkWinLose(self):
       mycount = 0 # 로봇의 수
-      for index , bot in enumerate ( self.robots ):
-         if self.grid [ bot ] == "ROBOT":
+      for index, bot in enumerate(self.robots):
+         if self.grid[bot] == "ROBOT":
             mycount += 1
 
       if mycount == 0: # 로봇의 수가 0일 때, WIN
@@ -147,7 +146,7 @@ class OurGame: # 제목 추천 부탁해요~
    def moveBots (self):
       # 턴 수에 따라 봇을 자동으로 추가(오류있음)
       global turns
-      if turns % 2 == 0 :
+      if turns % 2 == 0:
          xy = random.randrange(1, 100)
          if xy % 2 == 0:
             x = random.randrange(1, self.boardx)
@@ -167,11 +166,9 @@ class OurGame: # 제목 추천 부탁해요~
             self.robots.append((x, y))
             self.grid[(x, y)] = "ROBOT"
 
-      global movsteps, eating
-
       # ROBOT이 더욱 빠르게 이동
-      if eating > 20:
-         movsteps = 2
+      if self.eating > 20:
+         self.movsteps = 2
 
       for index, bot in enumerate(self.robots):
          if self.grid[bot] == "RUBBLE":
@@ -180,11 +177,11 @@ class OurGame: # 제목 추천 부탁해요~
          botx , boty = bot
 #         botx = bot [ 0 ]
 #         boty = bot [ 1 ]
-         if botx > self.playerX: botx -= movsteps
-         elif botx < self.playerX: botx += movsteps
+         if botx > self.playerX: botx -= self.movsteps
+         elif botx < self.playerX: botx += self.movsteps
 
-         if boty > self.playerY: boty -= movsteps
-         elif boty < self.playerY: boty += movsteps
+         if boty > self.playerY: boty -= self.movsteps
+         elif boty < self.playerY: boty += self.movsteps
 
          bot = (botx, boty)
 
