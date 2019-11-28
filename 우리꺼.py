@@ -3,7 +3,7 @@ import random
 
 Buldoger = 0
 
-class OurGame: # 제목 추천 부탁해요~
+class OurGame: #BlockRunner
    def __init__(self, screen, startingSomethings, boardx, boardy):
       self.turns = 0
       self.eating = 0
@@ -119,8 +119,16 @@ class OurGame: # 제목 추천 부탁해요~
    def Buldoger(self, playerX, playerY):
       pass
 
-   def Cross(self, playerX, playerY):
-      pass
+   def Cross(self, x, y):
+      if self.grid[(x+1, y)] == "ROBOT":
+         self.grid[(x+1, y)] == " "
+      elif self.grid[(x-1, y)] == "ROBOT":
+         self.grid[(x-1, y)] == " "
+      elif self.grid[(x, y+1)] == "ROBOT":
+         self.grid[(x, y+1)] == " "
+      elif self.grid[(x, y-1)] == "ROBOT":
+         self.grid[(x, y-1)] == " "
+
 
    def Rook(self, playerX, playerY):
       pass
