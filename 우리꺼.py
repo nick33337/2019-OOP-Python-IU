@@ -154,14 +154,14 @@ class OurGame: # 제목 추천 부탁해요~
             if pick == 1:
                y = 1
             else :
-               y = boardy
+               y = self.boardy
          else :
             y = random.randrange(1, self.boardy)
             pick = random.randrange(1, 2)
             if pick == 1:
                x = 1
             else :
-               x = boardx
+               x = self.boardx
          if (x, y) not in self.robots:
             self.robots.append((x, y))
             self.grid[(x, y)] = "ROBOT"
@@ -259,11 +259,11 @@ class OurGame: # 제목 추천 부탁해요~
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   turns += 1
                elif event.key == ord ( "b" ):
-                  Buldoger(self.playerX, self.playerY)
+                  self.Buldoger(self.playerX, self.playerY)
                elif event.key == ord ( "c" ):
-                  Cross(self.playerX, self.playerY)
+                  self.Cross(self.playerX, self.playerY)
                elif event.key == ord ( "r" ):
-                  Rook(self.playerX, self.playerY)
+                  self.Rook(self.playerX, self.playerY)
 
 
                elif event.key == ord ( "p" ):
