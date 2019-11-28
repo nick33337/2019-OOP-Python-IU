@@ -1,4 +1,4 @@
-import pygame
+import pygame  # pygame commit check
 import random
 import time
 
@@ -6,17 +6,17 @@ class robotsGame:
    def __init__ ( self , screen , startingRobots ):
       self.screen = screen
 
-      self.grid = dict()
+      self.grid = dict()  #
       for y in range ( 25 ):
          for x in range ( 50 ):
             self.grid [ ( x , y ) ] = None
 
       self.robots = list()
       for i in range ( startingRobots ):
-         while 1:
-            x = random.randrange ( 0 , 50 )
             y = random.randrange ( 0 , 25 )
 
+         while 1:
+            x = random.randrange ( 0 , 50 )
             if ( x , y ) not in self.robots:
                self.robots.append ( ( x , y ) )
                self.grid [ ( x , y ) ] = "ROBOT"
