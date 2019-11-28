@@ -2,8 +2,14 @@ import pygame
 import random
 import time
 
-class robotsGame: # 제목 추천 부탁해요~
-   def __init__(self, screen, startingRobots):
+turns = 0
+Buldoger = 0
+skillflag1 = "InActivated"
+skillflag2 = "InActivated"
+skillflag3 = "InActivated"
+
+class OurGame: # 제목 추천 부탁해요~
+   def __init__(self, screen, startingSomethings):
       self.screen = screen
 
       self.grid = dict()
@@ -12,7 +18,7 @@ class robotsGame: # 제목 추천 부탁해요~
             self.grid[(x, y)] = None
 
       self.robots = list()
-      for i in range(startingRobots):
+      for i in range(startingSomethings):
          while 1:
             x = random.randrange(0, 50)
             y = random.randrange(0, 25)
@@ -35,10 +41,12 @@ class robotsGame: # 제목 추천 부탁해요~
       self.legend()
 
 # 화면 하단에 보이는 글씨, 스킬 목록을 표시(추가 예정)
-   def legend ( self ):
-      pygame.draw.rect ( self.screen , ( 255 , 0 , 0 ) , ( 50 , 550 , 20 , 20 ) , 0 )   # Robot
-      pygame.draw.rect ( self.screen , ( 0 , 255 , 0 ) , ( 50 , 580 , 20 , 20 ) , 0 )   # You
-      pygame.draw.rect ( self.screen , ( 255 , 255 , 0 ) , ( 50 , 610 , 20 , 20 ) , 0 ) # Rubble
+   def legend(self):
+
+      pygame.draw.rect(self.screen, (255, 255, 255), (50, 550, 20, 20), 0)              # turn
+      pygame.draw.rect(self.screen, (255, 0, 0), (50, 580, 20, 20), 0)                  # Robot
+      pygame.draw.rect(self.screen, (0, 255, 0), (50, 610, 20, 20), 0)                  # You
+      pygame.draw.rect(self.screen, (255, 255, 0), (50, 640, 20, 20), 0)                # Rubble
 
       pygame.font.init()
       font = pygame.font.SysFont ( "" , 20 )
@@ -46,34 +54,62 @@ class robotsGame: # 제목 추천 부탁해요~
       robotLabel = font.render("Robots", True, (0, 255, 0))
       playerLabel = font.render("Player", True, (0, 255, 0))
       rubbleLabel = font.render("Rubble", True, (0, 255, 0))
-      moveLabel = font.render("Move with Q, W, E, A, D, Z, X, C or the arrow keys", True, (0, 255, 0))
+      moveLabel = font.render("Move with Q, W, E, A, D, Z, X, C or the arrow keys", True, (255, 255, 255))
       teleportLabel = font.render("Teleport with T", True, (0, 255, 0))
-      skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
 
-      self.screen.blit(robotLabel, (75, 550))
-      self.screen.blit(playerLabel, (75, 580))
-      self.screen.blit(rubbleLabel, (75, 610))
+      self.screen.blit(robotLabel, (75, 580))
+      self.screen.blit(playerLabel, (75, 610))
+      self.screen.blit(rubbleLabel, (75, 640))
       self.screen.blit(moveLabel, (550, 550))
       self.screen.blit(teleportLabel, (550, 580))
-      self.screen.blit(skillLabel1, (550, 610))
 
-# 로봇(붉은 색), 사용자(초록 색), 러블(노란 색)을 표시하는 크기와 위치 설정
-   def drawGrid ( self ):
-      for y in range ( 25 ):
-         for x in range ( 50 ):
-            pygame.draw.rect ( self.screen , ( 0 , 0 , 255 ) , ( ( x * 20 ) , ( y * 20 ) , 20 , 20 ) , 1)
-            if self.grid [ ( x , y ) ] == "ROBOT":
-                pygame.draw.rect ( self.screen , ( 255 , 0 , 0 ) , ( ( x * 20 ) + 1 , ( y * 20 ) + 1 , 18 , 18 ) , 0 )
-            elif self.grid [ ( x , y ) ] == "PLAYER":
+
+
+# 화면 상단의 게임판에서 로봇(붉은 색), 사용자(초록 색), 러블(노란 색)을 표시하는 크기와 위치 및 게임판(grid) 설정(건드리지 않아도 됨)
+   def drawGrid (self):
+      for y in range(25):
+         for x in range(50):
+            pygame.draw.rect(self.screen, (0, 0, 255), ((x * 20), (y * 20), 20, 20), 1)
+            if self.grid[(x, y)] == "ROBOT":
+                pygame.draw.rect(self.screen, (255, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+            elif self.grid[(x, y)] == "PLAYER":
                pygame.draw.rect ( self.screen , ( 0 , 255 , 0 ) , ( ( x * 20 ) + 1 , ( y * 20 ) + 1 , 18 , 18 ) , 0 )
             elif self.grid [ ( x , y ) ] == "RUBBLE":
                pygame.draw.rect ( self.screen , ( 255 , 255 , 0 ) , ( ( x * 20 ) + 1 , ( y * 20 ) + 1 , 18 , 18 ) , 0 )
             else:
                pygame.draw.rect ( self.screen , ( 0 , 0 , 0 ) , ( ( x * 20 ) + 1 , ( y * 20 ) + 1 , 18 , 18 ) , 0 )
 
+
+      global turns, skillflag1, skillflag2, skillflag3
+
+      pygame.font.init()
+      font = pygame.font.SysFont("", 20)
+
+      # turn수를 업데이트할 때마다 글씨가 겹쳐져서 출력된다.. 한 번 출력된 글씨를 지우는 방법이 필요(일단은 글씨 배경색을 지정해서 해결)
+      turnLabel = font.render("Turns : {}".format(turns), True, (125, 125, 255), (255, 255, 255))
+      self.screen.blit(turnLabel, (75, 550))
+
+      if skillflag1 == "Activated":
+         skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
+         self.screen.blit(skillLabel1, (550, 610))
+         skillflag1 = "Fin"
+
+      if skillflag2 == "Activated":
+         skillLabel2 = font.render("Cross(lv2) with C", True, (225, 0, 225))
+         self.screen.blit(skillLabel2, (550, 640))
+         skillflag2 = "Fin"
+
+      if skillflag3 == "Activated":
+         skillLabel3 = font.render("Rook(lv3) with R", True, (255, 100, 30))
+         self.screen.blit(skillLabel3, (550, 670))
+         skillflag3 = "Fin"
+
+
+
+
       pygame.display.flip()
 
-# 말 그대로 이겼는지 졌는지 확인하는 함수
+# 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
    def checkWinLose ( self ):
       mycount = 0 # 로봇의 수
       for index , bot in enumerate ( self.robots ):
@@ -87,12 +123,12 @@ class robotsGame: # 제목 추천 부탁해요~
       else:
          return None
 
-# 봇이 사용자를 쫓아다니도록 움직이는 조작
-   def moveBots ( self ):
+# 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
+   def moveBots (self):
       for index, bot in enumerate(self.robots):
-         if self.grid [ bot ] == "RUBBLE":
+         if self.grid[bot] == "RUBBLE":
             continue
-         self.grid [ bot ] = ""
+         self.grid[bot] = ""
          botx , boty = bot
 #         botx = bot [ 0 ]
 #         boty = bot [ 1 ]
@@ -102,23 +138,23 @@ class robotsGame: # 제목 추천 부탁해요~
          if boty > self.playerY: boty -= 1
          elif boty < self.playerY: boty += 1
 
-         bot = ( botx , boty )
+         bot = (botx, boty)
 
-         self.robots [ index ] = bot
+         self.robots[index] = bot
 
-         if self.grid [ bot ] == "PLAYER":
+         if self.grid[bot] == "PLAYER":
             # print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
             return
 
-         if self.grid [ bot ] == "ROBOT":
-            self.grid [ bot ] = "RUBBLE"
+         if self.grid[bot] == "ROBOT":
+            self.grid[bot] = "RUBBLE"  # 원본 코드에서는 RUBBLE이 되어 더 이상 움직이지 않지만, 합쳐지면 더 빠른 로봇 ROBOT2로 강화되는 걸로 규칙을 바꿔볼까요..?
 
-         if self.grid [ bot ] == "RUBBLE":
+         if self.grid[bot] == "RUBBLE":
             continue
 
-         self.grid [ bot ] = "ROBOT"
+         self.grid[bot] = "ROBOT"
 
-   def checkGrid ( self , position ):
+   def checkGrid (self, position):
       result = False
        # Check left
       check = ( position [ 0 ] - 1 , position [ 1 ] )
@@ -135,58 +171,83 @@ class robotsGame: # 제목 추천 부탁해요~
 
       return result
 
-# 플레이어의 키 조작
-   def run ( self ):
+# 플레이어의 키 조작(여기서 키보드 상의 원하는 키를 게임에서의 기능과 연관시킬 수 있다)
+   def run(self):
+      global turns, skillflag1, skillflag2, skillflag3
+      global Buldoger
+
       running = True
       while running:
+         # print(skillflag1) 디버깅
+         # print("{}".format(turns))  디버깅
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerY += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == pygame.K_UP or event.key == ord ( "w" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerY -= 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == pygame.K_RIGHT or event.key == ord ( "d" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerX += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == pygame.K_LEFT or event.key == ord ( "a" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerX -= 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == ord ( "e" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerX += 1
                   self.playerY -= 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == ord ( "q" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerX -= 1
                   self.playerY -= 1
                   self.grid [ ( self.playerX, self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == ord ( "z" ):
                   self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX -= 1
                   self.playerY += 1
                   self.grid [ ( self.playerX, self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == ord ( "c" ):
                   self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX += 1
                   self.playerY += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
                elif event.key == ord ( "t" ):
                   self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX = random.randrange ( 1 , 50 )
                   self.playerY = random.randrange ( 1 , 25 )
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  turns += 1
 
                elif event.key == ord ( "p" ):
                   running = False
                self.moveBots()
                over = self.checkWinLose()
+
+               #elif (True):
+               #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
+               if turns > 1:
+                  skillflag1 = "Activated"
+               if turns > 2:
+                  skillflag2 = "Activated"
+               if turns > 5:
+                  skillflag3 = "Activated"
+
+
                if over != None:
                   if over == "WIN": print("You survived!")
                   elif over == "LOSE": print("Looks like the robots got you this time!")
@@ -197,6 +258,6 @@ class robotsGame: # 제목 추천 부탁해요~
 pygame.display.init()
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
-game = robotsGame ( screen , 25 )
+game = OurGame(screen, 1)  # 원본에서는 25마리로 시작하지만, 우리게임은 1마리에서 시작해서 점점 난이도가 높아지는 걸로.. 할까요?
 game.drawGrid()
 game.run()
