@@ -119,13 +119,13 @@ class OurGame: # 제목 추천 부탁해요~
 
       pygame.display.flip()
 
-   def Buldoger(playerx, playery):
+   def Buldoger(self, playerx, playery):
       pass
 
-   def Cross(playerX, playerY):
+   def Cross(self, playerX, playerY):
       pass
 
-   def Rook(playerX, playerY):
+   def Rook(self, playerX, playerY):
       pass
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
