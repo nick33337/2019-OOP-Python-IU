@@ -121,13 +121,13 @@ class OurGame: #BlockRunner
 
    def Cross(self, x, y):
       if self.grid[(x+1, y)] == "ROBOT":
-         self.grid[(x+1, y)] == " "
-      elif self.grid[(x-1, y)] == "ROBOT":
-         self.grid[(x-1, y)] == " "
-      elif self.grid[(x, y+1)] == "ROBOT":
-         self.grid[(x, y+1)] == " "
-      elif self.grid[(x, y-1)] == "ROBOT":
-         self.grid[(x, y-1)] == " "
+         self.grid[(x+1, y)] = ""
+      if self.grid[(x-1, y)] == "ROBOT":
+         self.grid[(x-1, y)] = ""
+      if self.grid[(x, y+1)] == "ROBOT":
+         self.grid[(x, y+1)] = ""
+      if self.grid[(x, y-1)] == "ROBOT":
+         self.grid[(x, y-1)] = ""
 
 
    def Rook(self, playerX, playerY):
@@ -276,11 +276,11 @@ class OurGame: #BlockRunner
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
                if self.turns > 10:
-                  skillflag1 = "Activated"
-               if self.turns > 20:
-                  skillflag2 = "Activated"
+                  self.skillflag1 = "Activated"
+               if self.turns > 5:
+                  self.skillflag2 = "Activated"
                if self.turns > 50:
-                  skillflag3 = "Activated"
+                  self.skillflag3 = "Activated"
 
 
                if over != None:
