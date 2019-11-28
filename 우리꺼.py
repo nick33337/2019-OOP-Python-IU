@@ -11,6 +11,7 @@ skillflag3 = "InActivated"
 
 class OurGame: # 제목 추천 부탁해요~
    def __init__(self, screen, startingSomethings, boardx, boardy):
+
       self.screen = screen
       self.boardx = boardx
       self.boardy = boardy
@@ -99,8 +100,8 @@ class OurGame: # 제목 추천 부탁해요~
       turnLabel = font.render("Turns : {}".format(turns), True, (125, 125, 255), (255, 255, 255))
       self.screen.blit(turnLabel, (75, 550))
 
-      turnLabel = font.render("Eating : {}".format(eating), True, (255, 255, 255), (255, 0, 0))
-      self.screen.blit(turnLabel, (150, 550))
+      eatingLabel = font.render("Eating : {}".format(eating), True, (255, 255, 255), (255, 0, 0))
+      self.screen.blit(eatingLabel, (150, 550))
 
       if skillflag1 == "Activated":
          skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
@@ -119,7 +120,7 @@ class OurGame: # 제목 추천 부탁해요~
 
       pygame.display.flip()
 
-   def Buldoger(self, playerx, playery):
+   def Buldoger(self, playerX, playerY):
       pass
 
    def Cross(self, playerX, playerY):
