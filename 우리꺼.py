@@ -5,7 +5,7 @@ class robotsGame:
    def __init__ ( self , screen , startingRobots ):
       self.screen = screen
 
-      self.grid = dict()
+      self.grid = dict()  #
       for y in range ( 25 ):
          for x in range ( 50 ):
             self.grid [ ( x , y ) ] = None
