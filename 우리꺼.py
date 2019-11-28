@@ -123,16 +123,21 @@ class OurGame: #BlockRunner
    def Cross(self, x, y):
       if self.grid[(x+1, y)] == "ROBOT":
          self.grid[(x+1, y)] = ""
+         self.robots.remove((x+1, y))
       if self.grid[(x-1, y)] == "ROBOT":
          self.grid[(x-1, y)] = ""
+         self.robots.remove((x-1, y))
       if self.grid[(x, y+1)] == "ROBOT":
          self.grid[(x, y+1)] = ""
+         self.robots.remove((x, y+1))
       if self.grid[(x, y-1)] == "ROBOT":
          self.grid[(x, y-1)] = ""
+         self.robots.remove((x, y-1))
 
 
    def Rook(self, playerX, playerY):
       pass
+
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
    def checkWinLose(self):
@@ -141,12 +146,22 @@ class OurGame: #BlockRunner
          if self.grid[bot] == "ROBOT":
             mycount += 1
 
-      if mycount == 0: # 로봇의 수가 0일 때, WIN
+      if mycount == 0:  # 로봇의 수가 0일 때, WIN
          return "WIN"
-      elif ( self.playerX , self.playerY ) in self.robots:
+      elif (self.playerX, self.playerY) in self.robots:  # 사망판정조건
          return "LOSE"
       else:
          return None
+
+
+   def gameover(self):
+
+      pygame.font.init()
+      font = pygame.font.SysFont("", 20)
+
+      GameoverLabel = font.render("Gameover", True, (0, 0, 128), (255, 255, 255))
+      self.screen.blit(GameoverLabel, (512, 700))
+
 
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
@@ -171,8 +186,8 @@ class OurGame: #BlockRunner
             self.robots.append((x, y))
             self.grid[(x, y)] = "ROBOT"
 
-      # ROBOT이 더욱 빠르게 이동
-      if self.eating > 20:
+      # ROBOT이 더욱 빠르게 이동, 플레이어의 스킬도 더 좋아져야 한다.
+      if self.eating > 100:
          self.movsteps = 2
 
       for index, bot in enumerate(self.robots):
@@ -191,15 +206,7 @@ class OurGame: #BlockRunner
          self.robots[index] = bot
 
          if self.grid[bot] == "PLAYER":
-
-            pygame.font.init()
-            font = pygame.font.SysFont("", 20)
-            GameoverLabel = font.render("Gameover", True, (0, 0, 128), (255, 255, 255))
-            self.screen.blit(GameoverLabel, (512, 700))
-
-            print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
-            time.sleep(5)
-            break
+            self.gameover()
 
          if self.grid[bot] == "ROBOT":
             self.grid[bot] = "RUBBLE"
@@ -234,6 +241,7 @@ class OurGame: #BlockRunner
 
       running = True
       while running:
+         print(self.robots)
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
@@ -262,11 +270,11 @@ class OurGame: #BlockRunner
                   self.playerY = random.randrange ( 1 , self.boardy )
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
-               elif event.key == ord ( "b" ):
+               elif event.key == ord ( "b" ) and self.skillflag1 == "Fin":
                   self.Buldoger(self.playerX, self.playerY)
-               elif event.key == ord ( "c" ):
+               elif event.key == ord ( "c" ) and self.skillflag2 == "Fin":
                   self.Cross(self.playerX, self.playerY)
-               elif event.key == ord ( "r" ):
+               elif event.key == ord ( "r" ) and self.skillflag3 == "Fin":
                   self.Rook(self.playerX, self.playerY)
 
 
@@ -278,11 +286,11 @@ class OurGame: #BlockRunner
                #elif (True):
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
-               if self.turns > 10:
+               if self.turns > 1:
                   self.skillflag1 = "Activated"
-               if self.turns > 20:
+               if self.turns > 2:
                   self.skillflag2 = "Activated"
-               if self.turns > 50:
+               if self.turns > 5:
                   self.skillflag3 = "Activated"
 
 
