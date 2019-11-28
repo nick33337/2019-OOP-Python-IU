@@ -1,4 +1,4 @@
-import pygame
+import pygame  # pygame
 import random
 import time
 
@@ -13,10 +13,10 @@ class robotsGame:
 
       self.robots = list()
       for i in range ( startingRobots ):
-         while 1:
-            x = random.randrange ( 0 , 50 )
             y = random.randrange ( 0 , 25 )
 
+         while 1:
+            x = random.randrange ( 0 , 50 )
             if ( x , y ) not in self.robots:
                self.robots.append ( ( x , y ) )
                self.grid [ ( x , y ) ] = "ROBOT"
