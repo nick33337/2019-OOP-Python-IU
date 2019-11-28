@@ -152,19 +152,19 @@ class OurGame: #BlockRunner
    def moveBots (self):
       # 턴 수에 따라 봇을 자동으로 추가(오류있음)
       if self.turns % 2 == 0:
-         xy = random.randrange(1, 100)
-         if xy % 2 == 0:
-            x = random.randrange(1, self.boardx)
-            pick = random.randrange(1, 2)
-            if pick == 1:
-               y = 1
+         pick = random.randrange(1, 100)
+         if pick % 2 == 0:
+            x = random.randrange(0, self.boardx)
+            pickk = random.randrange(1, 2)
+            if pickk == 1:
+               y = 0
             else :
                y = self.boardy
          else :
-            y = random.randrange(1, self.boardy)
-            pick = random.randrange(1, 2)
-            if pick == 1:
-               x = 1
+            y = random.randrange(0, self.boardy)
+            pickk = random.randrange(1, 2)
+            if pickk == 1:
+               x = 0
             else :
                x = self.boardx
          if (x, y) not in self.robots:
@@ -179,9 +179,7 @@ class OurGame: #BlockRunner
          if self.grid[bot] == "RUBBLE":
             continue
          self.grid[bot] = ""
-         botx , boty = bot
-#         botx = bot [ 0 ]
-#         boty = bot [ 1 ]
+         botx, boty = bot
          if botx > self.playerX: botx -= self.movsteps
          elif botx < self.playerX: botx += self.movsteps
 
@@ -204,7 +202,7 @@ class OurGame: #BlockRunner
             break
 
          if self.grid[bot] == "ROBOT":
-            self.grid[bot] = "RUBBLE"  # 원본 코드에서는 RUBBLE이 되어 더 이상 움직이지 않지만, 합쳐지면 더 빠른 로봇 ROBOT2로 강화되는 걸로 규칙을 바꿔볼까요..?
+            self.grid[bot] = "RUBBLE"
 
          if self.grid[bot] == "RUBBLE":
             continue
@@ -236,8 +234,6 @@ class OurGame: #BlockRunner
 
       running = True
       while running:
-         # print(skillflag1) 디버깅
-         # print("{}".format(turns))  디버깅
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
