@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 class robotsGame:
    def __init__ ( self , screen , startingRobots ):
@@ -53,6 +54,7 @@ class robotsGame:
       self.screen.blit ( moveLabel , ( 550 , 550 ) )
       self.screen.blit ( teleportLabel , ( 550 , 580 ) )
 
+# 로봇(붉은 색), 사용자(초록 색), 러블(노란 색)을 표시하는 크기와 위치 설정
    def drawGrid ( self ):
       for y in range ( 25 ):
          for x in range ( 50 ):
@@ -68,33 +70,30 @@ class robotsGame:
 
       pygame.display.flip()
 
+# 말 그대로 이겼는지 졌는지 확인하는 함수
    def checkWinLose ( self ):
-      mycount = 0
+      mycount = 0 # 로봇의 수
       for index , bot in enumerate ( self.robots ):
-#DBG         print "checkWinLose", index, bot, self.grid [ bot ], "mycount =", mycount
          if self.grid [ bot ] == "ROBOT":
             mycount += 1
 
-#DBG      print "nRobots =", mycount
-      if mycount == 0:
+      if mycount == 0: # 로봇의 수가 0일 때, WIN
          return "WIN"
       elif ( self.playerX , self.playerY ) in self.robots:
          return "LOSE"
       else:
          return None
 
+# 봇이 사용자를 쫓아다니도록 움직이는 조작
    def moveBots ( self ):
-      for index , bot in enumerate ( self.robots ):
-#DBG         print "move bot", index, bot,
-
+      for index, bot in enumerate(self.robots):
          if self.grid [ bot ] == "RUBBLE":
- #DBG            print " rubble"
             continue
          self.grid [ bot ] = ""
          botx , boty = bot
 #         botx = bot [ 0 ]
 #         boty = bot [ 1 ]
-         if botx  > self.playerX: botx -= 1
+         if botx > self.playerX: botx -= 1
          elif botx < self.playerX: botx += 1
 
          if boty > self.playerY: boty -= 1
@@ -103,19 +102,13 @@ class robotsGame:
          bot = ( botx , boty )
 
          self.robots [ index ] = bot
- #DBG         print " to", bot
 
          if self.grid [ bot ] == "PLAYER":
+            # print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
             return
 
          if self.grid [ bot ] == "ROBOT":
             self.grid [ bot ] = "RUBBLE"
- #DBG            print "Collision"
- #DBG            for j , jbot in enumerate ( self.robots ):
- #DBG               if j == index:
- #DBG                  continue
- #DBG               if bot == jbot:
- #DBG                  print "Collision with", j, jbot
 
          if self.grid [ bot ] == "RUBBLE":
             continue
@@ -139,6 +132,7 @@ class robotsGame:
 
       return result
 
+# 플레이어의 키 조작
    def run ( self ):
       running = True
       while running:
@@ -169,22 +163,23 @@ class robotsGame:
                   self.grid [ ( self.playerX , self.playerY ) ] = ""
                   self.playerX -= 1
                   self.playerY -= 1
-                  self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  self.grid [ ( self.playerX, self.playerY ) ] = "PLAYER"
                elif event.key == ord ( "z" ):
-                  self.grid [ ( self.playerX , self.playerY ) ] = ""
+                  self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX -= 1
                   self.playerY += 1
-                  self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+                  self.grid [ ( self.playerX, self.playerY ) ] = "PLAYER"
                elif event.key == ord ( "c" ):
-                  self.grid [ ( self.playerX , self.playerY ) ] = ""
+                  self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX += 1
                   self.playerY += 1
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                elif event.key == ord ( "t" ):
-                  self.grid [ ( self.playerX , self.playerY ) ] = ""
+                  self.grid [ ( self.playerX, self.playerY ) ] = ""
                   self.playerX = random.randrange ( 1 , 50 )
                   self.playerY = random.randrange ( 1 , 25 )
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
+
                elif event.key == ord ( "p" ):
                   running = False
                self.moveBots()
@@ -193,10 +188,6 @@ class robotsGame:
                   if over == "WIN": print("You survived!")
                   elif over == "LOSE": print("Looks like the robots got you this time!")
                   running = False
-
- #DBG                  print "Player", self.playerX, self.playerY
- #DBG                  for index , bot in enumerate ( self.robots ):
- #DBG                     print "bot", index, bot, self.grid [ bot ]
 
                self.drawGrid()
 
