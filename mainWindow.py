@@ -13,13 +13,13 @@ class MainWindow(QWidget):
         self.middleVerticalBox()  # 가운데 세로 구역: 공연 정보 라벨, 시작 버튼
         self.rightVerticalBox()  # 오른쪽 세로 구역: 달력, 공연 시간, 난이도
 
-        # 전체 세로 박스 정렬 필요
+        # 전체 세로 박스 정렬
+        hGroupLayout
 
         self.setWindowTitle("티켓팅 연습 게임")
         self.setGeometry(300, 200, 1200, 700)  # x축, y축, 가로, 세로 지정하기
 
     def horizontalBox(self):  # 세로 박스 전체를 가로로 정렬하는 레이아웃
-
 
     def leftVerticalBox(self):  # 왼쪽 세로 구역: 제목/제작자 라벨, 졸업식 이미지/게임 도움말
         # 제목, 제작자, 도움말 라벨
@@ -29,11 +29,10 @@ class MainWindow(QWidget):
         lblHelp = label.setText("<b>도움말</b>\n티켓팅 연습 게임입니다.\n시작하기 버튼을 누르면 ")
 
         # 레이아웃
-        hLayout = QVBoxLayout
-        hLayout.addwidget(lblTitle)
-        hLayout.addwidget(lblPeople)
-        hLayout.addWidget(lblHelp)
-
+        vLayout = QVBoxLayout
+        vLayout.addwidget(lblTitle)
+        vLayout.addwidget(lblPeople)
+        vLayout.addWidget(lblHelp)
 
     def middleVerticalBox(self):  # 가운데 세로 구역: 공연 정보 라벨, 시작 버튼
         # 공연 정보 라벨
@@ -45,9 +44,9 @@ class MainWindow(QWidget):
         start_btn.resize(150, 50)  # resize(): (x축, y축) 크기
 
         # 레이아웃
-        hLayout = QVBoxLayout
-        hLayout.addwidget(lblInfo)
-        hLayout.addwidget(start_btn)
+        vLayout = QVBoxLayout
+        vLayout.addwidget(lblInfo)
+        vLayout.addwidget(start_btn)
 
     def rightVerticalBox(self):  # 오른쪽 세로 구역: 달력, 공연 시간, 난이도
         # 달력
@@ -57,10 +56,11 @@ class MainWindow(QWidget):
         # 난이도
 
         # 레이아웃
-        hLayout = QVBoxLayout
-        hLayout.addWidget()
-        hLayout.addWidget()
-        hLayout.addWidget()
+        vLayout = QVBoxLayout
+        vLayout.addWidget()
+        vLayout.addWidget()
+        vLayout.addWidget()
+
 if __name__ = "__main__":  # 실행 코드(?)
     app = QApplication(sys.argv)
     window = MainWindow()
