@@ -8,7 +8,7 @@ class MainWindow(QWidget):
     # 창 초기화
     def __init__(self):
         super().__init__()
-
+1
         self.leftVerticalBox()  # 왼쪽 세로 구역: 제목/제작자 라벨, 졸업식 이미지/게임 도움말
         self.middleVerticalBox()  # 가운데 세로 구역: 공연 정보 라벨, 시작 버튼
         self.rightVerticalBox()  # 오른쪽 세로 구역: 달력, 공연 시간, 난이도
