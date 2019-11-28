@@ -99,20 +99,22 @@ class OurGame: # 제목 추천 부탁해요~
       eatingLabel = font.render("Eating : {}".format(self.eating), True, (255, 255, 255), (255, 0, 0))
       self.screen.blit(eatingLabel, (150, 550))
 
+      print("1")
       if self.skillflag1 == "Activated":
          skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
          self.screen.blit(skillLabel1, (550, 610))
-         skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
+         self.skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
+         print("2")
 
       if self.skillflag2 == "Activated":
          skillLabel2 = font.render("Cross(lv2) with C", True, (225, 0, 225))
          self.screen.blit(skillLabel2, (550, 640))
-         skillflag2 = "Fin"
+         self.skillflag2 = "Fin"
 
       if self.skillflag3 == "Activated":
          skillLabel3 = font.render("Rook(lv3) with R", True, (255, 100, 30))
          self.screen.blit(skillLabel3, (550, 670))
-         skillflag3 = "Fin"
+         self.skillflag3 = "Fin"
 
       pygame.display.flip()
 
@@ -217,8 +219,6 @@ class OurGame: # 제목 추천 부탁해요~
 
 # 플레이어의 키 조작(여기서 키보드 상의 원하는 키를 게임에서의 기능과 연관시킬 수 있다)
    def run(self):
-      global turns, skillflag1, skillflag2, skillflag3
-      global Buldoger
 
       running = True
       while running:
@@ -269,11 +269,11 @@ class OurGame: # 제목 추천 부탁해요~
                #   continue      위에서 기능을 부여한 키 이외에 아무거나 눌렀을 때도 게임이 진행되는 것을 방지하는 코드
 
                if self.turns > 10:
-                  skillflag1 = "Activated"
+                  self.skillflag1 = "Activated"
                if self.turns > 20:
-                  skillflag2 = "Activated"
+                  self.skillflag2 = "Activated"
                if self.turns > 50:
-                  skillflag3 = "Activated"
+                  self.skillflag3 = "Activated"
 
 
                if over != None:
