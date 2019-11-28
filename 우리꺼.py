@@ -122,13 +122,13 @@ class OurGame: #BlockRunner
 
    def Cross(self, x, y):
       if self.grid[(x+1, y)] == "ROBOT":
-         self.grid[(x+1, y)] == " "
-      elif self.grid[(x-1, y)] == "ROBOT":
-         self.grid[(x-1, y)] == " "
-      elif self.grid[(x, y+1)] == "ROBOT":
-         self.grid[(x, y+1)] == " "
-      elif self.grid[(x, y-1)] == "ROBOT":
-         self.grid[(x, y-1)] == " "
+         self.grid[(x+1, y)] = ""
+      if self.grid[(x-1, y)] == "ROBOT":
+         self.grid[(x-1, y)] = ""
+      if self.grid[(x, y+1)] == "ROBOT":
+         self.grid[(x, y+1)] = ""
+      if self.grid[(x, y-1)] == "ROBOT":
+         self.grid[(x, y-1)] = ""
 
 
    def Rook(self, playerX, playerY):
