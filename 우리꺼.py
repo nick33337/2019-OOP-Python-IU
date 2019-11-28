@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 Buldoger = 0
 
@@ -193,8 +194,14 @@ class OurGame: #BlockRunner
 
          if self.grid[bot] == "PLAYER":
 
+            pygame.font.init()
+            font = pygame.font.SysFont("", 20)
+            GameoverLabel = font.render("Gameover", True, (0, 0, 128), (255, 255, 255))
+            self.screen.blit(GameoverLabel, (512, 700))
+
             print("게임이 끝났습니다. 5초 뒤 게임이 종료됩니다")
-            return
+            time.sleep(5)
+            break
 
          if self.grid[bot] == "ROBOT":
             self.grid[bot] = "RUBBLE"  # 원본 코드에서는 RUBBLE이 되어 더 이상 움직이지 않지만, 합쳐지면 더 빠른 로봇 ROBOT2로 강화되는 걸로 규칙을 바꿔볼까요..?
