@@ -332,7 +332,7 @@ class BlockRunner: #BlockRunner
          if flag == 1:
             self.grid[bot] = "ROBOT"
 
-      # 턴 수에 따라 봇을 자동으로 추가(오류있음)
+      # 턴 수에 따라 봇을 자동으로 추가
       if self.turns % 3 == 0:
          pick = random.randrange(1, 100)
          if pick % 2 == 0:
@@ -397,7 +397,7 @@ class BlockRunner: #BlockRunner
          print(self.robots)
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-               if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
+               if event.key == pygame.K_DOWN or event.key == ord ( "s" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY += 1
                   if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
@@ -472,7 +472,6 @@ class BlockRunner: #BlockRunner
 pygame.display.init()
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
-
-game = BlockRunner(screen, 1, 50, 25)  # 원본에서는 25마리로 시작하지만, 우리게임은 1마리에서 시작해서 점점 난이도가 높아지는 걸로.. 할까요?
+game = BlockRunner(screen, 1, 50, 25)
 game.drawGrid()
 game.run()
