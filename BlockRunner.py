@@ -4,18 +4,18 @@ import time
 
 class BlockRunner: #BlockRunner
    def __init__(self, screen, startingSomethings, boardx, boardy):
-      self.skillnum1 = 5
-      self.skillnum2 = 3
-      self.skillnum3 = 1
-      self.turns = 0
-      self.eating = 0
-      self.movsteps = 1
-      self.skillflag1 = "InActivated"
-      self.skillflag2 = "InActivated"
-      self.skillflag3 = "InActivated"
+      self.skillnum1 = 5      # 스킬1 사용 횟수
+      self.skillnum2 = 3      # 스킬2 사용 횟수
+      self.skillnum3 = 1      # 스킬3 사용 횟수
+      self.turns = 0       # 게임 진행 횟수
+      self.eating = 0      # 로봇이 Tail을 먹은 횟수
+      self.movsteps = 1    # 로봇의 이동 속도
+      self.skillflag1 = "InActivated"     # 스킬1 활성화 여부
+      self.skillflag2 = "InActivated"     # 스킬2 활성화 여부
+      self.skillflag3 = "InActivated"     # 스킬3 활성화 여부
       self.screen = screen
-      self.boardx = boardx
-      self.boardy = boardy
+      self.boardx = boardx       # 게임판의 가로 크기
+      self.boardy = boardy       # 게임판의 세로 크기
 
       self.grid = dict()
       for y in range(25):
@@ -62,7 +62,7 @@ class BlockRunner: #BlockRunner
       # render([화면에 쓸 글씨], 안티엘리어싱여부(글자를 부드럽게 만듬), RGB 글자색, RGB 배경색(생략가능))
       robotLabel = font.render("Robots", True, (255, 0, 0))
       playerLabel = font.render("Player", True, (0, 0, 255))
-      rubbleLabel = font.render("Rubble", True, (255, 255, 0))
+      rubbleLabel = font.render("Rubble(Wall)", True, (255, 255, 0))
       tailLabel = font.render("Tail", True, (0, 128, 0))
       moveLabel = font.render("Move with W, A, S, D or the arrow keys", True, (255, 255, 255))
       teleportLabel = font.render("Teleport with T(Lv 0)", True, (0, 255, 0))
@@ -114,7 +114,7 @@ class BlockRunner: #BlockRunner
          self.skillflag2 = "Fin"
 
       if self.skillflag3 == "Activated":
-         skillLabel3 = font.render("Bomb(lv3) with m", True, (255, 100, 30))
+         skillLabel3 = font.render("Nuclearbomb(lv3) with n", True, (255, 100, 30))
          self.screen.blit(skillLabel3, (550, 670))
          self.skillflag3 = "Fin"
 
@@ -176,22 +176,34 @@ class BlockRunner: #BlockRunner
    def Cross(self, x, y):
       if self.skillnum2 != 0:
          if self.grid[(x+1, y)] == "ROBOT":
-            self.grid[(x+1, y)] = ""
+            self.grid[(x+1, y)] = None
             self.robots.remove((x+1, y))
          if self.grid[(x-1, y)] == "ROBOT":
-            self.grid[(x-1, y)] = ""
+            self.grid[(x-1, y)] = None
             self.robots.remove((x-1, y))
          if self.grid[(x, y+1)] == "ROBOT":
-            self.grid[(x, y+1)] = ""
+            self.grid[(x, y+1)] = None
             self.robots.remove((x, y+1))
          if self.grid[(x, y-1)] == "ROBOT":
-            self.grid[(x, y-1)] = ""
+            self.grid[(x, y-1)] = None
             self.robots.remove((x, y-1))
          self.skillnum2 -= 1
+         self.turns += 1
 
 
-   def Bomb(self, x, y):
-      pass
+   def Nuclearbomb(self, x, y):
+      if self.skillnum3 != 0:
+         for i in range(x-2, x+3):
+            for j in range(y-2, y+3):
+               if self.grid[(i, j)] == "ROBOT":
+                  self.robots.remove((i, j))
+               if (i != x) or (j != y): # 약간의 애니메이션
+                  self.grid[(i, j)] = "PLAYER"
+                  self.drawGrid()
+                  time.sleep(0.1)
+                  self.grid[(i, j)] = ""
+         self.skillnum3 -= 1
+         self.turns += 1
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
    def checkWinLose(self):
@@ -223,26 +235,30 @@ class BlockRunner: #BlockRunner
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
       # ROBOT이 더욱 빠르게 이동, 플레이어의 스킬도 더 좋아져야 한다.
-      if self.eating > 100:
-         self.movsteps = 2
+      #if self.eating > 100:
+      #   self.movsteps = 2
 
       for index, bot in enumerate(self.robots):
          if self.grid[bot] == "RUBBLE":
             continue
          self.grid[bot] = ""
          botx, boty = bot
-         if botx > self.playerX: botx -= self.movsteps
-         elif botx < self.playerX: botx += self.movsteps
+         if botx > self.playerX:
+            botx -= self.movsteps
+         elif botx < self.playerX:
+            botx += self.movsteps
 
-         if boty > self.playerY: boty -= self.movsteps
-         elif boty < self.playerY: boty += self.movsteps
+         if boty > self.playerY:
+            boty -= self.movsteps
+         elif boty < self.playerY:
+            boty += self.movsteps
 
          bot = (botx, boty)
 
          self.robots[index] = bot
 
          if self.grid[bot] == "PLAYER":
-            self.gameover()      # 게임 끝
+            self.gameover()  # 게임 끝
 
          if self.grid[bot] == "ROBOT":
             self.grid[bot] = "RUBBLE"
@@ -297,6 +313,7 @@ class BlockRunner: #BlockRunner
    def run(self):
       running = True
       while running:
+         print(self.robots)
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
@@ -320,7 +337,7 @@ class BlockRunner: #BlockRunner
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
 
-
+               # 스킬 입력
                elif event.key == ord ( "t" ):
                   self.grid [ ( self.playerX, self.playerY ) ] = "TAIL"
                   self.playerX = random.randrange ( 1 , self.boardx )
@@ -331,8 +348,8 @@ class BlockRunner: #BlockRunner
                   self.Buldoger(self.playerX, self.playerY)
                elif event.key == ord ( "c" ) and self.skillflag2 == "Fin":
                   self.Cross(self.playerX, self.playerY)
-               elif event.key == ord ( "m" ) and self.skillflag3 == "Fin":
-                  self.Bomb(self.playerX, self.playerY)
+               elif event.key == ord ( "n" ) and self.skillflag3 == "Fin":
+                  self.Nuclearbomb(self.playerX, self.playerY)
 
 
                elif event.key == ord ( "p" ):
