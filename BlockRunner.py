@@ -2,10 +2,9 @@ import pygame
 import random
 import time
 
-Buldoger = 0
-
-class OurGame: #BlockRunner
+class BlockRunner: #BlockRunner
    def __init__(self, screen, startingSomethings, boardx, boardy):
+      self.skillnum1 = 5
       self.skillnum2 = 3
       self.skillnum3 = 1
       self.turns = 0
@@ -62,11 +61,11 @@ class OurGame: #BlockRunner
 
       # render([화면에 쓸 글씨], 안티엘리어싱여부(글자를 부드럽게 만듬), RGB 글자색, RGB 배경색(생략가능))
       robotLabel = font.render("Robots", True, (255, 0, 0))
-      playerLabel = font.render("Player", True, (0, 255, 0))
+      playerLabel = font.render("Player", True, (0, 0, 255))
       rubbleLabel = font.render("Rubble", True, (255, 255, 0))
       tailLabel = font.render("Tail", True, (0, 128, 0))
-      moveLabel = font.render("Move with Q, W, E, A, D, Z, X, C or the arrow keys", True, (255, 255, 255))
-      teleportLabel = font.render("Teleport with T", True, (0, 255, 0))
+      moveLabel = font.render("Move with W, A, S, D or the arrow keys", True, (255, 255, 255))
+      teleportLabel = font.render("Teleport with T(Lv 0)", True, (0, 255, 0))
 
       self.screen.blit(robotLabel, (75, 580))
       self.screen.blit(playerLabel, (75, 610))
@@ -85,7 +84,7 @@ class OurGame: #BlockRunner
             if self.grid[(x, y)] == "ROBOT":
                 pygame.draw.rect(self.screen, (255, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "PLAYER":
-               pygame.draw.rect(self.screen, (0, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+               pygame.draw.rect(self.screen, (0, 0, 255), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "RUBBLE":
                pygame.draw.rect(self.screen, (255, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "TAIL":
@@ -119,38 +118,22 @@ class OurGame: #BlockRunner
          self.screen.blit(skillLabel3, (550, 670))
          self.skillflag3 = "Fin"
 
+      if self.skillflag1 == "Fin":
+         skillLabel = font.render("{}".format(self.skillnum1), True, (225, 0, 225), (255, 255, 255))
+         self.screen.blit(skillLabel, (700, 610))
+
       if self.skillflag2 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum2), True, (225, 0, 225), (255, 255, 255))
          self.screen.blit(skillLabel, (700, 640))
 
       if self.skillflag3 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum3), True, (225, 0, 225), (255, 255, 255))
-         self.screen.blit(skillLabel, (700, 670))
+         self.screen.blit(skillLabel, (700, 610))
 
       pygame.display.flip()
 
-   def Buldoger(self, playerX, playerY):
-      pass
-
-   def Cross(self, x, y):
-      if self.skillnum2 != 0:
-         if self.grid[(x+1, y)] == "ROBOT":
-            self.grid[(x+1, y)] = ""
-            self.robots.remove((x+1, y))
-         if self.grid[(x-1, y)] == "ROBOT":
-            self.grid[(x-1, y)] = ""
-            self.robots.remove((x-1, y))
-         if self.grid[(x, y+1)] == "ROBOT":
-            self.grid[(x, y+1)] = ""
-            self.robots.remove((x, y+1))
-         if self.grid[(x, y-1)] == "ROBOT":
-            self.grid[(x, y-1)] = ""
-            self.robots.remove((x, y-1))
-         self.skillnum2 -= 1
-
-
-   def Rook(self, x, y):
-      if self.skillnum3 != 0:
+   def Buldoger(self, x, y):
+      if self.skillnum1 != 0:
          moves = 3
          while moves > 0:
             print(moves)
@@ -186,10 +169,29 @@ class OurGame: #BlockRunner
                      moves -= 1
                   self.drawGrid()
          self.turns += 1
-         self.skillnum3 -= 1
+         self.skillnum1 -= 1
          self.playerX = x
          self.playerY = y
 
+   def Cross(self, x, y):
+      if self.skillnum2 != 0:
+         if self.grid[(x+1, y)] == "ROBOT":
+            self.grid[(x+1, y)] = ""
+            self.robots.remove((x+1, y))
+         if self.grid[(x-1, y)] == "ROBOT":
+            self.grid[(x-1, y)] = ""
+            self.robots.remove((x-1, y))
+         if self.grid[(x, y+1)] == "ROBOT":
+            self.grid[(x, y+1)] = ""
+            self.robots.remove((x, y+1))
+         if self.grid[(x, y-1)] == "ROBOT":
+            self.grid[(x, y-1)] = ""
+            self.robots.remove((x, y-1))
+         self.skillnum2 -= 1
+
+
+   def Rook(self, x, y):
+      pass
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
    def checkWinLose(self):
@@ -361,6 +363,6 @@ class OurGame: #BlockRunner
 pygame.display.init()
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
-game = OurGame(screen, 1, 50, 25)  # 원본에서는 25마리로 시작하지만, 우리게임은 1마리에서 시작해서 점점 난이도가 높아지는 걸로.. 할까요?
+game = BlockRunner(screen, 1, 50, 25)  # 원본에서는 25마리로 시작하지만, 우리게임은 1마리에서 시작해서 점점 난이도가 높아지는 걸로.. 할까요?
 game.drawGrid()
 game.run()
