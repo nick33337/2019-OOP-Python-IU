@@ -19,12 +19,21 @@ class BlockRunner: #BlockRunner
       self.boardx = boardx       # 게임판의 가로 크기
       self.boardy = boardy       # 게임판의 세로 크기
 
+      self.robots = list()
+
       self.grid = dict()
       for y in range(25):
          for x in range(50):
-            self.grid[(x, y)] = None
+            if x == 0 or x == boardx-1:
+               self.grid[(x, y)] = "RUBBLE"
+               self.robots.append((x, y))
+            elif y == 0 or y == boardy-1:
+               self.grid[(x, y)] = "RUBBLE"
+               self.robots.append((x,y))
+            else:
+               self.grid[(x, y)] = None
 
-      self.robots = list()
+
       for i in range(startingSomethings):
          while 1:
             x = random.randrange(0, self.boardx)
@@ -55,7 +64,8 @@ class BlockRunner: #BlockRunner
       pygame.draw.rect(self.screen, (255, 0, 0), (50, 580, 20, 20), 0)                  # Robot
       pygame.draw.rect(self.screen, (0, 255, 0), (50, 610, 20, 20), 0)                  # You
       pygame.draw.rect(self.screen, (255, 255, 0), (50, 640, 20, 20), 0)                # Rubble
-      pygame.draw.rect(self.screen, (0, 128, 0), (50, 670, 20, 20), 0)                  # Tail  새로 추가함
+      pygame.draw.rect(self.screen, (0, 128, 0), (50, 670, 20, 20), 0)                  # Tail
+      pygame.draw.rect(self.screen, (128, 128, 0), (50, 700, 20, 20), 0)                # Wall  새로 추가함
 
       # 폰트 설정
       pygame.font.init()
@@ -64,8 +74,9 @@ class BlockRunner: #BlockRunner
       # render([화면에 쓸 글씨], 안티엘리어싱여부(글자를 부드럽게 만듬), RGB 글자색, RGB 배경색(생략가능))
       robotLabel = font.render("Robots", True, (255, 0, 0))
       playerLabel = font.render("Player", True, (0, 0, 255))
-      rubbleLabel = font.render("Rubble(Wall)", True, (255, 255, 0))
+      rubbleLabel = font.render("Rubble", True, (255, 255, 0))
       tailLabel = font.render("Tail", True, (0, 128, 0))
+      wallLabel = font.render("Wall", True, (128, 128, 0))
       moveLabel = font.render("Move with W, A, S, D or the arrow keys", True, (255, 255, 255))
       teleportLabel = font.render("Teleport with T(Lv 0)", True, (0, 255, 0))
 
@@ -73,6 +84,7 @@ class BlockRunner: #BlockRunner
       self.screen.blit(playerLabel, (75, 610))
       self.screen.blit(rubbleLabel, (75, 640))
       self.screen.blit(tailLabel, (75, 670))
+      self.screen.blit(wallLabel, (75, 700))
       self.screen.blit(moveLabel, (550, 550))
       self.screen.blit(teleportLabel, (550, 580))
 
@@ -93,6 +105,8 @@ class BlockRunner: #BlockRunner
                pygame.draw.rect(self.screen, (0, 128, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "RandomBox":
                pygame.draw.rect(self.screen, (255, 0, 255), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+            elif self.grid[(x, y)] == "Wall":
+               pygame.draw.rect(self.screen, (128, 128, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             else:
                pygame.draw.rect(self.screen, (0, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
 
@@ -122,17 +136,26 @@ class BlockRunner: #BlockRunner
          self.screen.blit(skillLabel3, (550, 670))
          self.skillflag3 = "Fin"
 
+      if self.skillflag4 == "Activated":
+         skillLabel4 = font.render("Wall(lv4) with h", True, (255, 255, 0))
+         self.screen.blit(skillLabel4, (550, 700))
+         self.skillflag4 = "Fin"
+
       if self.skillflag1 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum1), True, (225, 0, 225), (255, 255, 255))
-         self.screen.blit(skillLabel, (700, 610))
+         self.screen.blit(skillLabel, (730, 610))
 
       if self.skillflag2 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum2), True, (225, 0, 225), (255, 255, 255))
-         self.screen.blit(skillLabel, (700, 640))
+         self.screen.blit(skillLabel, (730, 640))
 
       if self.skillflag3 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum3), True, (225, 0, 225), (255, 255, 255))
-         self.screen.blit(skillLabel, (700, 670))
+         self.screen.blit(skillLabel, (730, 670))
+
+      if self.skillflag4 == "Fin":
+         skillLabel = font.render("{}".format(self.skillnum4), True, (225, 0, 225), (255, 255, 255))
+         self.screen.blit(skillLabel, (730, 700))
 
       pygame.display.flip()
 
@@ -209,6 +232,32 @@ class BlockRunner: #BlockRunner
          self.skillnum3 -= 1
          self.turns += 1
 
+   def Wall(self, x, y):
+      if self.skillnum4 != 0:
+         running = True
+         while running:
+            print(self.robots)
+            for event in pygame.event.get():
+               if event.type == pygame.KEYDOWN:
+                  if event.key == pygame.K_DOWN or event.key == ord("x"):
+                     for j in range(x - 2, x + 3):
+                        self.grid[(j, y + 1)] = "Wall"
+                     running = False
+                  elif event.key == pygame.K_UP or event.key == ord("w"):
+                     for j in range(x - 2, x + 3):
+                        self.grid[(j, y - 1)] = "Wall"
+                     running = False
+                  elif event.key == pygame.K_RIGHT or event.key == ord("d"):
+                     for j in range(y - 2, y + 3):
+                        self.grid[(x + 1, j)] = "Wall"
+                     running = False
+                  elif event.key == pygame.K_LEFT or event.key == ord("a"):
+                     for j in range(y - 2, y + 3):
+                        self.grid[(x - 1, j)] = "Wall"
+                     running = False
+         self.turns += 1
+         self.skillnum4 -= 1
+
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
    def checkWinLose(self):
       mycount = 0 # 로봇의 수
@@ -245,7 +294,7 @@ class BlockRunner: #BlockRunner
       for index, bot in enumerate(self.robots):
          if self.grid[bot] == "RUBBLE":
             continue
-         self.grid[bot] = ""
+         self.grid[bot] = None
          botx, boty = bot
          if botx > self.playerX:
             botx -= self.movsteps
@@ -273,9 +322,17 @@ class BlockRunner: #BlockRunner
          if self.grid[bot] == "TAIL":
             self.eating += 1
 
-         self.grid[bot] = "ROBOT"
+         flag = 1
 
-      # 턴 수에 따라 봇을 자동으로 추가(오류있음)
+         if self.grid[bot] == "Wall":
+            self.robots.remove(bot)
+            self.grid[bot] = None
+            flag = 0
+
+         if flag == 1:
+            self.grid[bot] = "ROBOT"
+
+      # 턴 수에 따라 봇을 자동으로 추가
       if self.turns % 3 == 0:
          pick = random.randrange(1, 100)
          if pick % 2 == 0:
@@ -299,8 +356,8 @@ class BlockRunner: #BlockRunner
 
       # 랜덤 박스를 생성합니다
       if self.turns % 10 == 0:
-         x = random.randange(1, self.boardx)
-         y = random.randange(1, self.boardy)
+         x = random.randrange(1, self.boardx)
+         y = random.randrange(1, self.boardy)
          self.grid[(x, y)] = "RandomBox"
 
    def randombox(self, x, y):
@@ -340,7 +397,7 @@ class BlockRunner: #BlockRunner
          print(self.robots)
          for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-               if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
+               if event.key == pygame.K_DOWN or event.key == ord ( "s" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY += 1
                   if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
@@ -350,16 +407,22 @@ class BlockRunner: #BlockRunner
                elif event.key == pygame.K_UP or event.key == ord ( "w" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY -= 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
                elif event.key == pygame.K_RIGHT or event.key == ord ( "d" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX += 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
                elif event.key == pygame.K_LEFT or event.key == ord ( "a" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX -= 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
 
@@ -376,7 +439,8 @@ class BlockRunner: #BlockRunner
                   self.Cross(self.playerX, self.playerY)
                elif event.key == ord ( "n" ) and self.skillflag3 == "Fin":
                   self.Nuclearbomb(self.playerX, self.playerY)
-
+               elif event.key == ord ( "h" ) and self.skillflag4 == "Fin":
+                  self.Wall(self.playerX, self.playerY)
 
                elif event.key == ord ( "p" ):
                   running = False
@@ -393,7 +457,8 @@ class BlockRunner: #BlockRunner
                   self.skillflag2 = "Activated"
                if self.turns > 5 and self.skillflag3 != "Fin":
                   self.skillflag3 = "Activated"
-
+               if self.turns > 7 and self.skillflag4 != "Fin":
+                  self.skillflag4 = "Activated"
 
 
                if over != None:
@@ -407,6 +472,6 @@ class BlockRunner: #BlockRunner
 pygame.display.init()
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
-game = BlockRunner(screen, 1, 50, 25)  # 원본에서는 25마리로 시작하지만, 우리게임은 1마리에서 시작해서 점점 난이도가 높아지는 걸로.. 할까요?
+game = BlockRunner(screen, 1, 50, 25)
 game.drawGrid()
 game.run()
