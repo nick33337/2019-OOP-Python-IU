@@ -103,7 +103,7 @@ class OurGame: # 제목 추천 부탁해요~
       self.screen.blit(turnLabel, (150, 550))
 
       if skillflag1 == "Activated":
-         skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
+         skillLabel1 = font.render("Bulldodger(lv1) with B", True, (0, 225, 225))
          self.screen.blit(skillLabel1, (550, 610))
          skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
 
@@ -119,7 +119,7 @@ class OurGame: # 제목 추천 부탁해요~
 
       pygame.display.flip()
 
-   def Buldoger(self, playerx, playery):
+   def Bulldodger(self, playerx, playery):
       pass
 
    def Cross(self, playerX, playerY):
