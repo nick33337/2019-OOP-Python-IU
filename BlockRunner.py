@@ -299,8 +299,8 @@ class BlockRunner: #BlockRunner
 
       # 랜덤 박스를 생성합니다
       if self.turns % 10 == 0:
-         x = random.randange(1, self.boardx)
-         y = random.randange(1, self.boardy)
+         x = random.randrange(1, self.boardx)
+         y = random.randrange(1, self.boardy)
          self.grid[(x, y)] = "RandomBox"
 
    def randombox(self, x, y):
@@ -350,16 +350,22 @@ class BlockRunner: #BlockRunner
                elif event.key == pygame.K_UP or event.key == ord ( "w" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY -= 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
                elif event.key == pygame.K_RIGHT or event.key == ord ( "d" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX += 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
                elif event.key == pygame.K_LEFT or event.key == ord ( "a" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerX -= 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
 
