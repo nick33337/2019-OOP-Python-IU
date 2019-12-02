@@ -7,12 +7,14 @@ class BlockRunner: #BlockRunner
       self.skillnum1 = 5      # 스킬1 사용 횟수
       self.skillnum2 = 3      # 스킬2 사용 횟수
       self.skillnum3 = 1      # 스킬3 사용 횟수
+      self.skillnum4 = 1      # 스킬4 사용 횟수
       self.turns = 0       # 게임 진행 횟수
       self.eating = 0      # 로봇이 Tail을 먹은 횟수
       self.movsteps = 1    # 로봇의 이동 속도
       self.skillflag1 = "InActivated"     # 스킬1 활성화 여부
       self.skillflag2 = "InActivated"     # 스킬2 활성화 여부
       self.skillflag3 = "InActivated"     # 스킬3 활성화 여부
+      self.skillflag4 = "InActivated"     # 스킬4 활성화 여부
       self.screen = screen
       self.boardx = boardx       # 게임판의 가로 크기
       self.boardy = boardy       # 게임판의 세로 크기
@@ -51,7 +53,7 @@ class BlockRunner: #BlockRunner
       # 화면 하단에 색칠된 사각형이 각각 무엇을 의미하는지 설명하는 예시 용 네모(rect) 그리기
       pygame.draw.rect(self.screen, (255, 255, 255), (50, 550, 20, 20), 0)              # turn
       pygame.draw.rect(self.screen, (255, 0, 0), (50, 580, 20, 20), 0)                  # Robot
-      pygame.draw.rect(self.screen, (0, 0, 255), (50, 610, 20, 20), 0)                  # You
+      pygame.draw.rect(self.screen, (0, 255, 0), (50, 610, 20, 20), 0)                  # You
       pygame.draw.rect(self.screen, (255, 255, 0), (50, 640, 20, 20), 0)                # Rubble
       pygame.draw.rect(self.screen, (0, 128, 0), (50, 670, 20, 20), 0)                  # Tail  새로 추가함
 
@@ -89,6 +91,8 @@ class BlockRunner: #BlockRunner
                pygame.draw.rect(self.screen, (255, 255, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             elif self.grid[(x, y)] == "TAIL":
                pygame.draw.rect(self.screen, (0, 128, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
+            elif self.grid[(x, y)] == "RandomBox":
+               pygame.draw.rect(self.screen, (255, 0, 255), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
             else:
                pygame.draw.rect(self.screen, (0, 0, 0), ((x * 20) + 1, (y * 20) + 1, 18, 18), 0)
 
@@ -292,6 +296,26 @@ class BlockRunner: #BlockRunner
             self.robots.append((x, y))
             self.grid[(x, y)] = "ROBOT"
 
+
+      # 랜덤 박스를 생성합니다
+      if self.turns % 10 == 0:
+         x = random.randange(1, self.boardx)
+         y = random.randange(1, self.boardy)
+         self.grid[(x, y)] = "RandomBox"
+
+   def randombox(self, x, y):
+      probability = random.randrange(1, 100)
+      if probability in range(1, 50):
+         self.skillnum1 += 1
+      if probability in range(51, 75):
+         self.skillnum2 += 1
+      if probability in range(76, 90):
+         self.skillnum3 += 1
+      if probability in range(91, 100):
+         self.skillnum4 += 1
+
+
+
    def checkGrid (self, position):
       result = False
        # Check left
@@ -319,6 +343,8 @@ class BlockRunner: #BlockRunner
                if event.key == pygame.K_DOWN or event.key == ord ( "x" ):
                   self.grid [ ( self.playerX , self.playerY ) ] = "TAIL"
                   self.playerY += 1
+                  if self.grid [ ( self.playerX , self.playerY ) ] == "RandomBox":
+                     self.randombox(self.playerX , self.playerY)
                   self.grid [ ( self.playerX , self.playerY ) ] = "PLAYER"
                   self.turns += 1
                elif event.key == pygame.K_UP or event.key == ord ( "w" ):
@@ -367,6 +393,7 @@ class BlockRunner: #BlockRunner
                   self.skillflag2 = "Activated"
                if self.turns > 5 and self.skillflag3 != "Fin":
                   self.skillflag3 = "Activated"
+
 
 
                if over != None:
