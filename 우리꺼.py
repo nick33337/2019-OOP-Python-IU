@@ -15,12 +15,12 @@ class OurGame: # 제목 추천 부탁해요~
       self.boardx = boardx
       self.boardy = boardy
 
-      self.grid = dict()  # 50칸, 25칸짜리 좌표 생성
+      self.grid = dict()
       for y in range(25):
          for x in range(50):
             self.grid[(x, y)] = None
 
-      self.robots = list()  # 로봇의 좌표 리스트 생성
+      self.robots = list()
       for i in range(startingSomethings):
          while 1:
             x = random.randrange(0, self.boardx)
@@ -103,7 +103,7 @@ class OurGame: # 제목 추천 부탁해요~
       self.screen.blit(turnLabel, (150, 550))
 
       if skillflag1 == "Activated":
-         skillLabel1 = font.render("Bulldodger(lv1) with B", True, (0, 225, 225))
+         skillLabel1 = font.render("Buldoger(lv1) with B", True, (0, 225, 225))
          self.screen.blit(skillLabel1, (550, 610))
          skillflag1 = "Fin"  # 글씨가 겹쳐지는 것을 방지하기 위해 if문 두 번 돌지 않도록 지정
 
