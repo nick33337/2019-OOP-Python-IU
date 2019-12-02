@@ -51,7 +51,7 @@ class BlockRunner: #BlockRunner
       # 화면 하단에 색칠된 사각형이 각각 무엇을 의미하는지 설명하는 예시 용 네모(rect) 그리기
       pygame.draw.rect(self.screen, (255, 255, 255), (50, 550, 20, 20), 0)              # turn
       pygame.draw.rect(self.screen, (255, 0, 0), (50, 580, 20, 20), 0)                  # Robot
-      pygame.draw.rect(self.screen, (0, 255, 0), (50, 610, 20, 20), 0)                  # You
+      pygame.draw.rect(self.screen, (0, 0, 255), (50, 610, 20, 20), 0)                  # You
       pygame.draw.rect(self.screen, (255, 255, 0), (50, 640, 20, 20), 0)                # Rubble
       pygame.draw.rect(self.screen, (0, 128, 0), (50, 670, 20, 20), 0)                  # Tail  새로 추가함
 
@@ -114,7 +114,7 @@ class BlockRunner: #BlockRunner
          self.skillflag2 = "Fin"
 
       if self.skillflag3 == "Activated":
-         skillLabel3 = font.render("Rook(lv3) with R", True, (255, 100, 30))
+         skillLabel3 = font.render("Bomb(lv3) with m", True, (255, 100, 30))
          self.screen.blit(skillLabel3, (550, 670))
          self.skillflag3 = "Fin"
 
@@ -128,7 +128,7 @@ class BlockRunner: #BlockRunner
 
       if self.skillflag3 == "Fin":
          skillLabel = font.render("{}".format(self.skillnum3), True, (225, 0, 225), (255, 255, 255))
-         self.screen.blit(skillLabel, (700, 610))
+         self.screen.blit(skillLabel, (700, 670))
 
       pygame.display.flip()
 
@@ -190,7 +190,7 @@ class BlockRunner: #BlockRunner
          self.skillnum2 -= 1
 
 
-   def Rook(self, x, y):
+   def Bomb(self, x, y):
       pass
 
 # 말 그대로 이겼는지 졌는지 확인하는 함수(건드리지 않아도 됨)
@@ -331,8 +331,8 @@ class BlockRunner: #BlockRunner
                   self.Buldoger(self.playerX, self.playerY)
                elif event.key == ord ( "c" ) and self.skillflag2 == "Fin":
                   self.Cross(self.playerX, self.playerY)
-               elif event.key == ord ( "r" ) and self.skillflag3 == "Fin":
-                  self.Rook(self.playerX, self.playerY)
+               elif event.key == ord ( "m" ) and self.skillflag3 == "Fin":
+                  self.Bomb(self.playerX, self.playerY)
 
 
                elif event.key == ord ( "p" ):
