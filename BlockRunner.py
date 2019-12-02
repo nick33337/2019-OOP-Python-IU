@@ -139,7 +139,7 @@ class BlockRunner: #BlockRunner
             print(moves)
             for event in pygame.event.get():
                if event.type == pygame.KEYDOWN:
-                  if event.key == pygame.K_DOWN or event.key == ord("x"):
+                  if event.key == pygame.K_DOWN or event.key == ord("s"):
                      self.grid[(x, y)] = "TAIL"
                      y += 1
                      if self.grid[(x, y)] == "ROBOT":
