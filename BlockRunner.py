@@ -286,11 +286,12 @@ class BlockRunner: #BlockRunner
       time.sleep(2)
       return
       """
-
+      BLACK = (255, 255, 255)
+      WHITE = (0, 0, 0)
       pygame.font.init()
       font = pygame.font.SysFont("", 70)
-      gameoverLabel = font.render("Game Over!", True, (0, 0, 0), (200, 200, 200))
-      pygame.display.flip()
+      gameoverLabel = font.render("Game Over!", True, (255, 255, 255), (200, 200, 200))
+      screen.fill(BLACK)
       self.screen.blit(gameoverLabel, (256, 350))
       time.sleep(5)
       return
@@ -487,4 +488,10 @@ game = BlockRunner(screen, 1, 50, 25)
 game.drawGrid()
 game.run()
 if game.checkWinLose() == "LOSE":
+   print("chk")
+   pygame.quit()
+   pygame.init()
+   pygame.display.init()
+   screen = pygame.display.set_mode((1024, 768))
    game.gameOver()
+
