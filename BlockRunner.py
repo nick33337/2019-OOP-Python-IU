@@ -286,14 +286,14 @@ class BlockRunner: #BlockRunner
       time.sleep(2)
       return
       """
-      BLACK = (255, 255, 255)
-      WHITE = (0, 0, 0)
+      BLACK = (0, 0, 0)
+      screen = pygame.display.set_mode((512, 384))
       pygame.font.init()
-      font = pygame.font.SysFont("", 70)
-      gameoverLabel = font.render("Game Over!", True, (255, 255, 255), (200, 200, 200))
+      font = pygame.font.SysFont("Gulim", 30)
+      gameoverLabel = font.render("Game Over!", True, (255, 255, 255), (0, 0, 128))
       screen.fill(BLACK)
       self.screen.blit(gameoverLabel, (256, 350))
-      time.sleep(5)
+      time.sleep(10)
       return
 
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
@@ -488,10 +488,11 @@ game = BlockRunner(screen, 1, 50, 25)
 game.drawGrid()
 game.run()
 if game.checkWinLose() == "LOSE":
-   print("chk")
    pygame.quit()
    pygame.init()
    pygame.display.init()
    screen = pygame.display.set_mode((1024, 768))
    game.gameOver()
+   pygame.quit()
+   # 아예 창을 닫고 파이게임을 초기화했기 때문에 새로운 창을 새로 형성(?) 해서 띄워줘야 함
 
