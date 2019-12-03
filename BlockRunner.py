@@ -276,25 +276,15 @@ class BlockRunner: #BlockRunner
    # 게임오버 확인 및 창 닫기
    def gameOver(self):
 
-      """ 원래 코드
-      pygame.font.init()
-      font = pygame.font.SysFont("", 20)
-
-      GameoverLabel = font.render("Gameover", True, (0, 0, 128), (255, 255, 255))
-      self.screen.blit(GameoverLabel, (512, 700))
-
-      time.sleep(2)
-      return
-      """
-      BLACK = (0, 0, 0)
       screen = pygame.display.set_mode((512, 384))
       pygame.font.init()
-      font = pygame.font.SysFont("Gulim", 30)
-      gameoverLabel = font.render("Game Over!", True, (255, 255, 255), (0, 0, 128))
-      screen.fill(BLACK)
-      self.screen.blit(gameoverLabel, (256, 350))
-      time.sleep(10)
-      return
+      font = pygame.font.SysFont("Gulim", 80)
+      # screen.fill(255, 255, 255)
+      gameoverLabel = font.render("Game Over!", True, (100, 0, 0))
+      screen.blit(gameoverLabel, (95, 140))
+      pygame.display.update()
+      time.sleep(3)
+      pygame.quit()
 
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
@@ -482,6 +472,7 @@ class BlockRunner: #BlockRunner
 
 
 pygame.display.init()
+pygame.display.set_caption('BlockRunner')
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
 game = BlockRunner(screen, 1, 50, 25)
@@ -491,7 +482,7 @@ if game.checkWinLose() == "LOSE":
    pygame.quit()
    pygame.init()
    pygame.display.init()
-   screen = pygame.display.set_mode((1024, 768))
+   screen = pygame.display.set_mode((512, 384))
    game.gameOver()
    pygame.quit()
    # 아예 창을 닫고 파이게임을 초기화했기 때문에 새로운 창을 새로 형성(?) 해서 띄워줘야 함
