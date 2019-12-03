@@ -2,6 +2,7 @@ import pygame
 import random
 import time
 
+
 class BlockRunner: #BlockRunner
    def __init__(self, screen, startingSomethings, boardx, boardy):
       self.skillnum1 = 5      # 스킬1 사용 횟수
@@ -272,9 +273,10 @@ class BlockRunner: #BlockRunner
       else:
          return None
 
+   # 게임오버 확인 및 창 닫기
+   def gameOver(self):
 
-   def gameover(self):
-
+      """ 원래 코드
       pygame.font.init()
       font = pygame.font.SysFont("", 20)
 
@@ -283,7 +285,15 @@ class BlockRunner: #BlockRunner
 
       time.sleep(2)
       return
+      """
 
+      pygame.font.init()
+      font = pygame.font.SysFont("", 70)
+      gameoverLabel = font.render("Game Over!", True, (0, 0, 0), (200, 200, 200))
+      pygame.display.flip()
+      self.screen.blit(gameoverLabel, (256, 350))
+      time.sleep(5)
+      return
 
 # 봇이 사용자를 쫓아다니도록 움직이는 조작(건드리지 않아도 됨)
    def moveBots (self):
@@ -311,7 +321,7 @@ class BlockRunner: #BlockRunner
          self.robots[index] = bot
 
          if self.grid[bot] == "PLAYER":
-            self.gameover()  # 게임 끝
+            self.gameOver()  # 게임 끝
 
          if self.grid[bot] == "ROBOT":
             self.grid[bot] = "RUBBLE"
@@ -469,9 +479,12 @@ class BlockRunner: #BlockRunner
 
                self.drawGrid()
 
+
 pygame.display.init()
 screen = pygame.display.set_mode ( ( 1024 , 768 ) )
 
 game = BlockRunner(screen, 1, 50, 25)
 game.drawGrid()
 game.run()
+if game.checkWinLose() == "LOSE":
+   game.gameOver()
